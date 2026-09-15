@@ -1,0 +1,1287 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Centinela Agents",
+    "description": "Agentes explicables para evaluación de transacciones y validación documental.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api V1 Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/evaluate": {
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Evaluate Transaction",
+        "operationId": "evaluate_transaction_api_v1_transactions_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Decision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transactions/evaluate/batch": {
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Evaluate Batch",
+        "operationId": "evaluate_batch_api_v1_transactions_evaluate_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/TransactionInput"
+                },
+                "type": "array",
+                "maxItems": 200,
+                "title": "Transactions"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Decision"
+                  },
+                  "type": "array",
+                  "title": "Response Evaluate Batch Api V1 Transactions Evaluate Batch Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/documents/validate": {
+      "post": {
+        "tags": [
+          "documents"
+        ],
+        "summary": "Validate Document",
+        "operationId": "validate_document_api_v1_documents_validate_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_validate_document_api_v1_documents_validate_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDecision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/documents/references": {
+      "post": {
+        "tags": [
+          "documents"
+        ],
+        "summary": "Register Reference",
+        "operationId": "register_reference_api_v1_documents_references_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_register_reference_api_v1_documents_references_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Register Reference Api V1 Documents References Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/documents/{trace_id}/evidence": {
+      "get": {
+        "tags": [
+          "documents"
+        ],
+        "summary": "Document Evidence",
+        "operationId": "document_evidence_api_v1_documents__trace_id__evidence_get",
+        "parameters": [
+          {
+            "name": "trace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trace Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Document Evidence Api V1 Documents  Trace Id  Evidence Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "Cases",
+        "operationId": "cases_api_v1_cases_get",
+        "parameters": [
+          {
+            "name": "process",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Process"
+            }
+          },
+          {
+            "name": "verdict",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Verdict"
+            }
+          },
+          {
+            "name": "requires_human_review",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Requires Human Review"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  },
+                  "title": "Response Cases Api V1 Cases Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cases/{trace_id}": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "Case",
+        "operationId": "case_api_v1_cases__trace_id__get",
+        "parameters": [
+          {
+            "name": "trace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Trace Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Case Api V1 Cases  Trace Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feedback": {
+      "post": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "Feedback",
+        "operationId": "feedback_api_v1_feedback_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Feedback"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Feedback Api V1 Feedback Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/metrics": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "summary": "Get Metrics",
+        "operationId": "get_metrics_api_v1_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Get Metrics Api V1 Metrics Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "app"
+        ],
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Behavior": {
+        "properties": {
+          "tx_last_hour": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Tx Last Hour"
+          },
+          "tx_last_24h": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Tx Last 24H"
+          },
+          "failed_logins_24h": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Failed Logins 24H"
+          },
+          "session_seconds": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Session Seconds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tx_last_hour",
+          "tx_last_24h",
+          "failed_logins_24h",
+          "session_seconds"
+        ],
+        "title": "Behavior"
+      },
+      "Body_register_reference_api_v1_documents_references_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "document_type": {
+            "type": "string",
+            "enum": [
+              "cedula",
+              "comprobante_domicilio",
+              "contrato",
+              "poder",
+              "liquidacion",
+              "firma",
+              "otro"
+            ],
+            "title": "Document Type",
+            "default": "firma"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_register_reference_api_v1_documents_references_post"
+      },
+      "Body_validate_document_api_v1_documents_validate_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "document_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "cedula",
+                  "comprobante_domicilio",
+                  "contrato",
+                  "poder",
+                  "liquidacion",
+                  "firma",
+                  "otro"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Document Type"
+          },
+          "reference_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Id"
+          },
+          "expected_fields": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Fields"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_validate_document_api_v1_documents_validate_post"
+      },
+      "Check": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "warn",
+              "pending"
+            ],
+            "title": "Status"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "critical": {
+            "type": "boolean",
+            "title": "Critical",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "status",
+          "detail"
+        ],
+        "title": "Check"
+      },
+      "CustomerProfile": {
+        "properties": {
+          "segment": {
+            "type": "string",
+            "title": "Segment"
+          },
+          "risk_tier": {
+            "type": "string",
+            "enum": [
+              "bajo",
+              "medio",
+              "alto"
+            ],
+            "title": "Risk Tier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "segment",
+          "risk_tier"
+        ],
+        "title": "CustomerProfile"
+      },
+      "Decision": {
+        "properties": {
+          "trace_id": {
+            "type": "string",
+            "title": "Trace Id"
+          },
+          "process": {
+            "type": "string",
+            "enum": [
+              "transaction",
+              "document"
+            ],
+            "title": "Process"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "aprobar",
+              "validacion_adicional",
+              "bloquear",
+              "autentico",
+              "sospechoso",
+              "falso"
+            ],
+            "title": "Verdict"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "title": "Requires Human Review"
+          },
+          "explanation_customer": {
+            "type": "string",
+            "title": "Explanation Customer"
+          },
+          "explanation_analyst": {
+            "type": "string",
+            "title": "Explanation Analyst"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "tokens_in": {
+            "type": "integer",
+            "title": "Tokens In",
+            "default": 0
+          },
+          "tokens_out": {
+            "type": "integer",
+            "title": "Tokens Out",
+            "default": 0
+          },
+          "cost_usd": {
+            "type": "number",
+            "title": "Cost Usd",
+            "default": 0
+          },
+          "latency_ms": {
+            "type": "number",
+            "title": "Latency Ms",
+            "default": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "shadow": {
+            "type": "boolean",
+            "title": "Shadow",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "trace_id",
+          "process",
+          "verdict",
+          "score",
+          "confidence",
+          "reasons",
+          "evidence",
+          "requires_human_review",
+          "explanation_customer",
+          "explanation_analyst",
+          "model"
+        ],
+        "title": "Decision"
+      },
+      "DestinationAccount": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "bank": {
+            "type": "string",
+            "title": "Bank"
+          },
+          "is_new_beneficiary": {
+            "type": "boolean",
+            "title": "Is New Beneficiary",
+            "default": false
+          },
+          "country": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "title": "Country"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "bank",
+          "country"
+        ],
+        "title": "DestinationAccount"
+      },
+      "Device": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "is_new_device": {
+            "type": "boolean",
+            "title": "Is New Device",
+            "default": false
+          },
+          "os": {
+            "type": "string",
+            "title": "Os"
+          },
+          "ip_country": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "title": "Ip Country"
+          },
+          "vpn": {
+            "type": "boolean",
+            "title": "Vpn",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "os",
+          "ip_country"
+        ],
+        "title": "Device"
+      },
+      "DocumentDecision": {
+        "properties": {
+          "trace_id": {
+            "type": "string",
+            "title": "Trace Id"
+          },
+          "process": {
+            "type": "string",
+            "enum": [
+              "transaction",
+              "document"
+            ],
+            "title": "Process"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "aprobar",
+              "validacion_adicional",
+              "bloquear",
+              "autentico",
+              "sospechoso",
+              "falso"
+            ],
+            "title": "Verdict"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "requires_human_review": {
+            "type": "boolean",
+            "title": "Requires Human Review"
+          },
+          "explanation_customer": {
+            "type": "string",
+            "title": "Explanation Customer"
+          },
+          "explanation_analyst": {
+            "type": "string",
+            "title": "Explanation Analyst"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "tokens_in": {
+            "type": "integer",
+            "title": "Tokens In",
+            "default": 0
+          },
+          "tokens_out": {
+            "type": "integer",
+            "title": "Tokens Out",
+            "default": 0
+          },
+          "cost_usd": {
+            "type": "number",
+            "title": "Cost Usd",
+            "default": 0
+          },
+          "latency_ms": {
+            "type": "number",
+            "title": "Latency Ms",
+            "default": 0
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "shadow": {
+            "type": "boolean",
+            "title": "Shadow",
+            "default": false
+          },
+          "document_type_detected": {
+            "type": "string",
+            "enum": [
+              "cedula",
+              "comprobante_domicilio",
+              "contrato",
+              "poder",
+              "liquidacion",
+              "firma",
+              "otro"
+            ],
+            "title": "Document Type Detected"
+          },
+          "fields": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ExtractedField"
+            },
+            "type": "object",
+            "title": "Fields"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/Check"
+            },
+            "type": "array",
+            "title": "Checks"
+          },
+          "pages_analyzed": {
+            "type": "integer",
+            "title": "Pages Analyzed"
+          },
+          "image_quality": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Image Quality"
+          }
+        },
+        "type": "object",
+        "required": [
+          "trace_id",
+          "process",
+          "verdict",
+          "score",
+          "confidence",
+          "reasons",
+          "evidence",
+          "requires_human_review",
+          "explanation_customer",
+          "explanation_analyst",
+          "model",
+          "document_type_detected",
+          "fields",
+          "checks",
+          "pages_analyzed",
+          "image_quality"
+        ],
+        "title": "DocumentDecision"
+      },
+      "Evidence": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "rule",
+              "similarity",
+              "vision",
+              "metadata",
+              "consistency"
+            ],
+            "title": "Type"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "weight": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Weight"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "name",
+          "value",
+          "weight",
+          "detail"
+        ],
+        "title": "Evidence"
+      },
+      "ExtractedField": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "confidence"
+        ],
+        "title": "ExtractedField"
+      },
+      "Feedback": {
+        "properties": {
+          "trace_id": {
+            "type": "string",
+            "title": "Trace Id"
+          },
+          "label": {
+            "type": "string",
+            "enum": [
+              "fraude_confirmado",
+              "legitimo",
+              "documento_falso",
+              "documento_autentico"
+            ],
+            "title": "Label"
+          },
+          "analyst": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 2,
+            "title": "Analyst"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000,
+            "title": "Comment",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "trace_id",
+          "label",
+          "analyst"
+        ],
+        "title": "Feedback"
+      },
+      "Geo": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Lon"
+          },
+          "distance_from_home_km": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Distance From Home Km"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "distance_from_home_km"
+        ],
+        "title": "Geo"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "OriginAccount": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "age_days": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Age Days"
+          },
+          "avg_monthly_amount": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Avg Monthly Amount"
+          },
+          "country": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2,
+            "title": "Country"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "age_days",
+          "avg_monthly_amount",
+          "country"
+        ],
+        "title": "OriginAccount"
+      },
+      "TransactionInput": {
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "title": "Transaction Id"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp"
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CLP",
+            "title": "Currency",
+            "default": "CLP"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "origin_account": {
+            "$ref": "#/components/schemas/OriginAccount"
+          },
+          "destination_account": {
+            "$ref": "#/components/schemas/DestinationAccount"
+          },
+          "device": {
+            "$ref": "#/components/schemas/Device"
+          },
+          "geo": {
+            "$ref": "#/components/schemas/Geo"
+          },
+          "behavior": {
+            "$ref": "#/components/schemas/Behavior"
+          },
+          "customer_profile": {
+            "$ref": "#/components/schemas/CustomerProfile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "transaction_id",
+          "timestamp",
+          "amount",
+          "channel",
+          "type",
+          "origin_account",
+          "destination_account",
+          "device",
+          "geo",
+          "behavior",
+          "customer_profile"
+        ],
+        "title": "TransactionInput"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

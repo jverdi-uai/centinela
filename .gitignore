@@ -1,0 +1,12 @@
+.env
+.deps/
+.tmp/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+data/*.db
+data/traces/*
+!data/traces/.gitkeep
+data/references/*
+!data/references/.gitkeep
+

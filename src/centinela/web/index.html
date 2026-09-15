@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centinela · Protección antifraude</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Inicio Centinela"><span class="brand-mark">C</span><span>Centinela</span></a>
+    <div class="api-state"><span id="statusDot" class="dot"></span><span id="statusText">Conectando…</span><span id="modeBadge" class="mode">Demo</span></div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <p class="nav-label">Experiencias</p>
+      <button class="nav-item active" data-view="client"><span>◉</span> Cliente</button>
+      <button class="nav-item" data-view="analyst"><span>◎</span> Analista</button>
+      <button class="nav-item" data-view="supervisor"><span>▦</span> Supervisor</button>
+      <div class="side-note"><strong>Protección explicable</strong><span>Las decisiones complejas siempre llegan a revisión humana.</span></div>
+    </aside>
+
+    <main>
+      <section id="client" class="view active">
+        <div class="hero">
+          <div><p class="eyebrow">Portal cliente</p><h1>Opera con tranquilidad</h1><p>Simula una transacción o valida un documento. La protección ocurre en segundo plano.</p></div>
+          <div class="shield" aria-hidden="true">✓</div>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-panel="transactionPanel">Simular transacción</button>
+          <button class="tab" data-panel="documentPanel">Validar documento</button>
+        </div>
+
+        <section id="transactionPanel" class="panel active">
+          <div class="card form-card">
+            <div class="card-head"><div><h2>Nueva transacción</h2><p>Elige un escenario o ajusta los datos.</p></div></div>
+            <div class="scenarios">
+              <button class="scenario active" data-scenario="legitimate"><span class="scenario-icon safe">✓</span><span><strong>Habitual</strong><small>Operación conocida</small></span></button>
+              <button class="scenario" data-scenario="doubtful"><span class="scenario-icon warn">!</span><span><strong>Inusual</strong><small>Requiere confirmación</small></span></button>
+              <button class="scenario" data-scenario="fraud"><span class="scenario-icon danger">×</span><span><strong>Alto riesgo</strong><small>Revisión especializada</small></span></button>
+            </div>
+            <form id="transactionForm">
+              <div class="form-grid">
+                <label><span>Monto (CLP)</span><input id="amount" type="number" min="1" required></label>
+                <label><span>Tipo</span><select id="txType"><option value="transferencia">Transferencia</option><option value="pago">Pago</option><option value="retiro">Retiro</option><option value="compra">Compra</option></select></label>
+                <label><span>Canal</span><select id="channel"><option value="app_movil">App móvil</option><option value="web">Web</option><option value="cajero">Cajero</option><option value="sucursal">Sucursal</option></select></label>
+                <label><span>Distancia del domicilio (km)</span><input id="distance" type="number" min="0" step="0.1"></label>
+                <label><span>Transacciones última hora</span><input id="velocity" type="number" min="0"></label>
+                <label><span>Intentos fallidos</span><input id="failedLogins" type="number" min="0"></label>
+              </div>
+              <div class="checks-row">
+                <label class="switch"><input id="newBeneficiary" type="checkbox"><span></span> Beneficiario nuevo</label>
+                <label class="switch"><input id="newDevice" type="checkbox"><span></span> Dispositivo nuevo</label>
+                <label class="switch"><input id="vpn" type="checkbox"><span></span> Conexión VPN</label>
+              </div>
+              <button class="primary" type="submit"><span>Evaluar operación</span><b>→</b></button>
+            </form>
+          </div>
+          <div id="transactionResult" class="result-card empty"><div class="empty-icon">⌁</div><h3>Resultado de la evaluación</h3><p>Aquí verás una respuesta clara, sin detalles técnicos sensibles.</p></div>
+        </section>
+
+        <section id="documentPanel" class="panel">
+          <div class="card form-card">
+            <div class="card-head"><div><h2>Validar documento</h2><p>JPG, PNG o PDF · máximo 10 MB.</p></div></div>
+            <form id="documentForm">
+              <label id="dropzone" class="dropzone"><input id="documentFile" type="file" accept=".jpg,.jpeg,.png,.pdf" required><span class="upload-icon">↑</span><strong>Arrastra tu documento aquí</strong><small>o haz clic para buscarlo</small><em id="fileName"></em></label>
+              <label><span>Tipo de documento</span><select id="documentType"><option value="">Detectar automáticamente</option><option value="cedula">Cédula</option><option value="comprobante_domicilio">Comprobante de domicilio</option><option value="contrato">Contrato</option><option value="poder">Poder</option><option value="liquidacion">Liquidación</option><option value="firma">Firma</option></select></label>
+              <button class="primary" type="submit"><span>Validar documento</span><b>→</b></button>
+            </form>
+          </div>
+          <div id="documentResult" class="result-card empty"><div class="empty-icon">▤</div><h3>Resultado documental</h3><p>Te indicaremos si el documento fue validado o necesita otra captura.</p></div>
+        </section>
+      </section>
+
+      <section id="analyst" class="view">
+        <div class="page-head"><div><p class="eyebrow">Operación antifraude</p><h1>Bandeja de revisión</h1><p>Casos explicables, ordenados para decisión humana.</p></div><button id="refreshCases" class="secondary">Actualizar</button></div>
+        <div class="filter-row"><select id="caseProcess"><option value="">Todos los procesos</option><option value="transaction">Transacciones</option><option value="document">Documentos</option></select><label class="switch"><input id="onlyReview" type="checkbox"><span></span> Solo revisión humana</label></div>
+        <div class="card table-card"><div id="casesTable" class="table-empty">Aún no hay casos evaluados.</div></div>
+      </section>
+
+      <section id="supervisor" class="view">
+        <div class="page-head"><div><p class="eyebrow">Control y desempeño</p><h1>Resumen operacional</h1><p>Volumen, decisiones, revisión humana y costos trazados.</p></div><button id="refreshMetrics" class="secondary">Actualizar</button></div>
+        <div id="kpis" class="kpi-grid"></div>
+        <div class="dashboard-grid">
+          <div class="card"><div class="card-head"><div><h2>Decisiones</h2><p>Distribución por veredicto</p></div></div><div id="verdictChart" class="bars"></div></div>
+          <div class="card"><div class="card-head"><div><h2>Procesos</h2><p>Volumen evaluado</p></div></div><div id="processChart" class="donut-wrap"></div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

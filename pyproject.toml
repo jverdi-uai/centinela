@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "centinela-agents"
+version = "0.1.0"
+description = "API de agentes antifraude multimodal con trazabilidad y revisión humana"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.141.1",
+  "uvicorn[standard]==0.52.4",
+  "pydantic>=2.13,<3",
+  "pydantic-settings==2.15.0",
+  "sqlalchemy==2.0.52",
+  "openai==3.13.0",
+  "numpy>=2.3,<3",
+  "Pillow>=12.3,<13",
+  "pypdfium2>=5.13,<6",
+  "python-multipart==0.0.32",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4,<9", "httpx==0.28.1"]
+excel = ["openpyxl>=3.1,<4"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/centinela"]
+
+[tool.hatch.build]
+include = ["src/centinela/**"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
